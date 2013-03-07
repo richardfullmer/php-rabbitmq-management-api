@@ -1,0 +1,29 @@
+{
+    "name": "richardfullmer/rabbitmq-management-api",
+    "type": "library",
+    "description": "An object oriented wrapper for the RabbitMQ Management HTTP Api",
+    "homepage": "https://github.com/richardfullmer/php-rabbitmq-management-api",
+    "keywords": ["rest", "message queue", "rabbitmq"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Richard Fullmer",
+            "email": "richardfullmer@gmail.com",
+            "homepage": "https://github.com/richardfullmer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "guzzle/guzzle": "~3.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "RabbitMq\\ManagementApi": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    }
+}
