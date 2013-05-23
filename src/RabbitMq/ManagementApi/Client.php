@@ -186,7 +186,11 @@ class Client
      */
     public function send($endpoint, $method = 'GET', $headers = null, $body = null)
     {
-        $request = $this->client->createRequest($method, $endpoint, $headers, json_encode($body))->setAuth($this->username, $this->password);
+        if (null !== $body) {
+            $body = json_encode($body);
+        }
+        
+        $request = $this->client->createRequest($method, $endpoint, $headers, $body)->setAuth($this->username, $this->password);
         $response = $request->send();
 
         return json_decode($response->getBody(), true);
