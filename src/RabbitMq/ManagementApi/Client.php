@@ -191,6 +191,11 @@ class Client
         }
         
         $request = $this->client->createRequest($method, $endpoint, $headers, $body)->setAuth($this->username, $this->password);
+        
+        if (in_array($method, array('PUT', 'POST', 'DELETE'))) {
+            $request->setHeader('content-type', 'application/json');
+        }
+        
         $response = $request->send();
 
         return json_decode($response->getBody(), true);
