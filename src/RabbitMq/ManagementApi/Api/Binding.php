@@ -63,6 +63,8 @@ class Binding extends AbstractApi
 
         if ($routingKey) {
             $parameters['routing_key'] = $routingKey;
+        } else {
+            $parameters['routing_key'] = '';
         }
         if ($arguments) {
             $parameters['arguments'] = $arguments;
