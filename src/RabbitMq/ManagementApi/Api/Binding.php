@@ -41,6 +41,21 @@ class Binding extends AbstractApi
     }
 
     /**
+     * A list of all bindings between two exchanges. Remember, two exchanges can be bound together many times with
+     * different parameters!
+     *
+     * @param string $vhost
+     * @param string $source
+     * @param string $destination
+     *
+     * @return array
+     */
+    public function exchangeBinding($vhost, $source, $destination)
+    {
+        return $this->client->send(array('/api/bindings/{vhost}/e/{source}/e/{destination}', array('vhost' => $vhost, 'source' => $source, 'destination' => $destination)));
+    }
+
+    /**
      *  To create a new binding, POST to this URI. You will need a body looking something like this:
      *
      * {
@@ -74,6 +89,39 @@ class Binding extends AbstractApi
     }
 
     /**
+     *  To create a new exchange to exchange binding, POST to this URI. You will need a body looking something like this:
+     *
+     * {
+     *     "routing_key": "my_routing_key",
+     *     "arguments": []
+     * }
+     *
+     * All keys are optional. The response will contain a Location header telling you the URI of your new binding.
+     *
+     * @param string $vhost
+     * @param string $source
+     * @param string $destination
+     * @param string|null $routingKey
+     * @param array|null $arguments
+     * @return array
+     */
+    public function createExchange($vhost, $source, $destination, $routingKey = null, array $arguments = null)
+    {
+        $parameters = array();
+
+        if ($routingKey) {
+            $parameters['routing_key'] = $routingKey;
+        } else {
+            $parameters['routing_key'] = '';
+        }
+        if ($arguments) {
+            $parameters['arguments'] = $arguments;
+        }
+
+        return $this->client->send(array('/api/bindings/{vhost}/e/{source}/e/{destination}', array('vhost' => $vhost, 'source' => $source, 'destination' => $destination)), 'POST', null, $parameters);
+    }
+
+    /**
      * An individual binding between an exchange and a queue. The props part of the URI is a "name" for the binding
      * composed of its routing key and a hash of its arguments.
      *
@@ -89,7 +137,22 @@ class Binding extends AbstractApi
     }
 
     /**
-     * Remove an individual binding.
+     * An individual binding between two exchanges. The props part of the URI is a "name" for the binding
+     * composed of its routing key and a hash of its arguments.
+     *
+     * @param string $vhost
+     * @param string $source
+     * @param string $destination
+     * @param string $props
+     * @return array
+     */
+    public function getExchange($vhost, $source, $destination, $props)
+    {
+        return $this->client->send(array('/api/bindings/{vhost}/e/{source}/e/{destination}/{props}', array('vhost' => $vhost, 'source' => $source, 'destination' => $destination, 'props' => $props)));
+    }
+
+    /**
+     * Remove an individual binding between an exchange and a queue.
      *
      * @param string $vhost
      * @param string $exchange
@@ -100,5 +163,19 @@ class Binding extends AbstractApi
     public function delete($vhost, $exchange, $queue, $props)
     {
         return $this->client->send(array('/api/bindings/{vhost}/e/{exchange}/q/{queue}/{props}', array('vhost' => $vhost, 'exchange' => $exchange, 'queue' => $queue, 'props' => $props)), 'DELETE');
+    }
+
+    /**
+     * Remove an individual binding between two exchanges.
+     *
+     * @param string $vhost
+     * @param string $source
+     * @param string $destination
+     * @param string $props
+     * @return array
+     */
+    public function deleteExchange($vhost, $source, $destination, $props)
+    {
+        return $this->client->send(array('/api/bindings/{vhost}/e/{source}/e/{destination}/{props}', array('vhost' => $vhost, 'source' => $source, 'destination' => $destination, 'props' => $props)), 'DELETE');
     }
 }
