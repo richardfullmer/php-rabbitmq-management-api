@@ -30,7 +30,7 @@ class Permission extends AbstractApi
      */
     public function get($vhost, $user)
     {
-        return $this->client->send(array('/api/permissions/{vhost}/{user}', array('vhost' => $vhost, 'user' => $user)));
+        return $this->client->send(sprintf('/api/permissions/%s/%s', urlencode($vhost), urlencode($user)));
     }
 
     /**
@@ -52,7 +52,7 @@ class Permission extends AbstractApi
             throw new InvalidArgumentException("Error creating permission: 'configure', 'write', and 'read' permissions must be properly set.");
         }
 
-        return $this->client->send(array('/api/permissions/{vhost}/{user}', array('vhost' => $vhost, 'user' => $user)), 'PUT', null, $permission);
+        return $this->client->send(sprintf('/api/permissions/%s/%s', urlencode($vhost), urlencode($user)), 'PUT', [], $permission);
     }
 
     /**
@@ -64,7 +64,7 @@ class Permission extends AbstractApi
      */
     public function delete($vhost, $user)
     {
-        return $this->client->send(array('/api/permissions/{vhost}/{user}', array('vhost' => $vhost, 'user' => $user)), 'DELETE');
+        return $this->client->send(sprintf('/api/permissions/%s/%s', urlencode($vhost), urlencode($user)), 'DELETE');
     }
 
 }

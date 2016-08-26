@@ -28,6 +28,6 @@ class Node extends AbstractApi
      */
     public function get($name, $memory = false)
     {
-        return $this->client->send(array('/api/nodes/{name}{?memory}', array('name' => $name, 'memory' => $memory)));
+        return $this->client->send(sprintf('/api/nodes/%s%s', urlencode($name), $memory ? '?memory=true' : ''));
     }
 }

@@ -30,11 +30,11 @@ class Parameter extends AbstractApi
     public function get($component, $vhost = null, $name = null)
     {
         if ($vhost && $name) {
-            return $this->client->send(array('/api/parameters/{component}/{vhost}/{name}', array('component' => $component, 'vhost' => $vhost, 'name' => $name)));
+            return $this->client->send(sprintf('/api/parameters/%s/%s/%s', urlencode($component), urlencode($vhost), urlencode($name)));
         } elseif ($vhost) {
-            return $this->client->send(array('/api/parameters/{component}/{vhost}', array('component' => $component, 'vhost' => $vhost)));
+            return $this->client->send(sprintf('/api/parameters/%s/%s', urlencode($component), urlencode($vhost)));
         } else {
-            return $this->client->send(array('/api/parameters/{component}', array('component' => $component)));
+            return $this->client->send(sprintf('/api/parameters/%s', urlencode($component)));
         }
     }
 
@@ -56,7 +56,7 @@ class Parameter extends AbstractApi
      */
     public function create($component, $vhost, $name, array $parameter)
     {
-        return $this->client->send(array('/api/parameters/{component}/{vhost}/{name}', array('component' => $component, 'vhost' => $vhost, 'name' => $name)), 'PUT', null, $parameter);
+        return $this->client->send(sprintf('/api/parameters/%s/%s/%s', urlencode($component), urlencode($vhost), urlencode($name)), 'PUT', [], $parameter);
     }
 
     /**
@@ -69,6 +69,6 @@ class Parameter extends AbstractApi
      */
     public function delete($component, $vhost, $name)
     {
-        return $this->client->send(array('/api/parameters/{component}/{vhost}/{name}', array('component' => $component, 'vhost' => $vhost, 'name' => $name)), 'DELETE');
+        return $this->client->send(sprintf('/api/parameters/%s/%s/%s', urlencode($component), urlencode($vhost), urlencode($name)), 'DELETE');
     }
 }

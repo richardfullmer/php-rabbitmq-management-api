@@ -11,7 +11,7 @@ class Vhost extends AbstractApi
 {
     /**
      * A list of all vhosts.
-     * 
+     *
      * @return array
      */
     public function all()
@@ -27,7 +27,7 @@ class Vhost extends AbstractApi
      */
     public function get($name)
     {
-        return $this->client->send(array('/api/vhosts/{name}', array('name' => $name)));
+        return $this->client->send(sprintf('/api/vhosts/%s', urlencode($name)));
     }
 
     /**
@@ -38,7 +38,7 @@ class Vhost extends AbstractApi
      */
     public function create($name)
     {
-        return $this->client->send(array('/api/vhosts/{name}', array('name' => $name)), 'PUT');
+        return $this->client->send(sprintf('/api/vhosts/%s', urlencode($name)), 'PUT');
     }
 
     /**
@@ -49,7 +49,7 @@ class Vhost extends AbstractApi
      */
     public function delete($name)
     {
-        return $this->client->send(array('/api/vhosts/{name}', array('name' => $name)), 'DELETE');
+        return $this->client->send(sprintf('/api/vhosts/%s', urlencode($name)), 'DELETE');
     }
 
     /**
@@ -60,6 +60,6 @@ class Vhost extends AbstractApi
      */
     public function permissions($name)
     {
-        return $this->client->send(array('/api/vhosts/{name}/permissions', array('name' => $name)));
+        return $this->client->send(sprintf('/api/vhosts/%s/permissions', urlencode($name)));
     }
 }

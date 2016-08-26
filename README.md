@@ -3,7 +3,7 @@ PHP RabbitMQ Management Api
 
 A simple object oriented wrapper for the [RabbitMQ Management HTTP Api](http://hg.rabbitmq.com/rabbitmq-management/raw-file/rabbitmq_v3_0_3/priv/www/api/index.html) in PHP 5.3
 
-Uses [Guzzle](http://guzzlephp.org) for REST requests.
+Uses [PHP-HTTP](http://docs.php-http.org/en/latest/index.html) for requests.
 
 Installation
 ------------
@@ -12,6 +12,14 @@ Installable through composer via:
 
 ```bash
 $ composer require richardfullmer/rabbitmq-management-api
+```
+
+Additionally, you require a [httplug compatible client](http://docs.php-http.org/en/latest/clients.html).
+
+For example, use the guzzle6 adapter:
+
+```bash
+$ composer require php-http/guzzle6-adapter
 ```
 
 Basic Usage
@@ -36,7 +44,6 @@ $response = $client->exchanges()->publish('/', 'sample-messages', array(
 if ($response['routed']) {
     print 'Message delivered';
 }
-
 ```
 
 License

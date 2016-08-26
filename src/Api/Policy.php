@@ -33,10 +33,10 @@ class Policy extends AbstractApi
     public function get($vhost, $name = null)
     {
         if ($name) {
-            return $this->client->send(array('/api/policies/{vhost}/{name}', array('vhost' => $vhost, 'name' => $name)));
+            return $this->client->send(sprintf('/api/policies/%s/%s', urlencode($vhost), urlencode($name)));
         }
 
-        return $this->client->send(array('/api/policies/{vhost}', array('vhost' => $vhost)));
+        return $this->client->send(sprintf('/api/policies/%s', urlencode($vhost)));
     }
 
     /**
@@ -51,7 +51,7 @@ class Policy extends AbstractApi
      */
     public function create($vhost, $name, array $policy)
     {
-        return $this->client->send(array('/api/policies/{vhost}/{name}', array('vhost' => $vhost, 'name' => $name)), 'PUT', null, $policy);
+        return $this->client->send(sprintf('/api/policies/%s/%s', urlencode($vhost), urlencode($name)), 'PUT', [], $policy);
     }
 
     /**
@@ -63,6 +63,6 @@ class Policy extends AbstractApi
      */
     public function delete($vhost, $name)
     {
-        return $this->client->send(array('/api/policies/{vhost}/{name}', array('vhost' => $vhost, 'name' => $name)), 'DELETE');
+        return $this->client->send(sprintf('/api/policies/%s/%s', urlencode($vhost), urlencode($name)), 'DELETE');
     }
 }
