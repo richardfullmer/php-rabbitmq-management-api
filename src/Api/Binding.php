@@ -20,7 +20,7 @@ class Binding extends AbstractApi
     public function all($vhost = null)
     {
         if ($vhost) {
-            return $this->client->send(array('/api/bindings/{vhost}', array('vhost' => $vhost)));
+            return $this->client->send(sprintf('/api/bindings/%s', urlencode($vhost)));
         } else {
             return $this->client->send('/api/bindings');
         }
@@ -37,7 +37,7 @@ class Binding extends AbstractApi
      */
     public function binding($vhost, $exchange, $queue)
     {
-        return $this->client->send(array('/api/bindings/{vhost}/e/{exchange}/q/{queue}', array('vhost' => $vhost, 'exchange' => $exchange, 'queue' => $queue)));
+        return $this->client->send(sprintf('/api/bindings/%s/e/%s/q/%s', urlencode($vhost), urlencode($exchange), urlencode($queue)));
     }
 
     /**
@@ -52,7 +52,7 @@ class Binding extends AbstractApi
      */
     public function exchangeBinding($vhost, $source, $destination)
     {
-        return $this->client->send(array('/api/bindings/{vhost}/e/{source}/e/{destination}', array('vhost' => $vhost, 'source' => $source, 'destination' => $destination)));
+        return $this->client->send(sprintf('/api/bindings/%s/e/%s/e/%s', urlencode($vhost), urlencode($source), urlencode($destination)));
     }
 
     /**
@@ -85,7 +85,7 @@ class Binding extends AbstractApi
             $parameters['arguments'] = $arguments;
         }
 
-        return $this->client->send(array('/api/bindings/{vhost}/e/{exchange}/q/{queue}', array('vhost' => $vhost, 'exchange' => $exchange, 'queue' => $queue)), 'POST', null, $parameters);
+        return $this->client->send(sprintf('/api/bindings/%s/e/%s/q/%s', urlencode($vhost), urlencode($exchange), urlencode($queue)), 'POST', [], $parameters);
     }
 
     /**
@@ -118,7 +118,7 @@ class Binding extends AbstractApi
             $parameters['arguments'] = $arguments;
         }
 
-        return $this->client->send(array('/api/bindings/{vhost}/e/{source}/e/{destination}', array('vhost' => $vhost, 'source' => $source, 'destination' => $destination)), 'POST', null, $parameters);
+        return $this->client->send(sprintf('/api/bindings/%s/e/%s/e/%s', urlencode($vhost), urlencode($source), urlencode($destination)), 'POST', [], $parameters);
     }
 
     /**
@@ -133,7 +133,7 @@ class Binding extends AbstractApi
      */
     public function get($vhost, $exchange, $queue, $props)
     {
-        return $this->client->send(array('/api/bindings/{vhost}/e/{exchange}/q/{queue}/{props}', array('vhost' => $vhost, 'exchange' => $exchange, 'queue' => $queue, 'props' => $props)));
+        return $this->client->send(sprintf('/api/bindings/%s/e/%s/q/%s/%s', urlencode($vhost), urlencode($exchange), urlencode($queue), urlencode($props)));
     }
 
     /**
@@ -148,7 +148,7 @@ class Binding extends AbstractApi
      */
     public function getExchange($vhost, $source, $destination, $props)
     {
-        return $this->client->send(array('/api/bindings/{vhost}/e/{source}/e/{destination}/{props}', array('vhost' => $vhost, 'source' => $source, 'destination' => $destination, 'props' => $props)));
+        return $this->client->send(sprintf('/api/bindings/%s/e/%s/e/%s/%s', urlencode($vhost), urlencode($source), urlencode($destination), urlencode($props)));
     }
 
     /**
@@ -162,7 +162,7 @@ class Binding extends AbstractApi
      */
     public function delete($vhost, $exchange, $queue, $props)
     {
-        return $this->client->send(array('/api/bindings/{vhost}/e/{exchange}/q/{queue}/{props}', array('vhost' => $vhost, 'exchange' => $exchange, 'queue' => $queue, 'props' => $props)), 'DELETE');
+        return $this->client->send(sprintf('/api/bindings/%s/e/%s/q/%s/%s', urlencode($vhost), urlencode($exchange), urlencode($queue), urlencode($props)), 'DELETE');
     }
 
     /**
@@ -176,6 +176,6 @@ class Binding extends AbstractApi
      */
     public function deleteExchange($vhost, $source, $destination, $props)
     {
-        return $this->client->send(array('/api/bindings/{vhost}/e/{source}/e/{destination}/{props}', array('vhost' => $vhost, 'source' => $source, 'destination' => $destination, 'props' => $props)), 'DELETE');
+        return $this->client->send(sprintf('/api/bindings/%s/e/%s/e/%s/%s', urlencode($vhost), urlencode($source), urlencode($destination), urlencode($props)), 'DELETE');
     }
 }

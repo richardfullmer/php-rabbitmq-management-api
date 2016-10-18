@@ -59,7 +59,7 @@ class Queue extends AbstractApi
      */
     public function create($vhost, $name, array $queue)
     {
-        return $this->client->send(sprintf('/api/queues/%s/%s', urlencode($vhost), urlencode($name)), 'PUT', null, $queue);
+        return $this->client->send(sprintf('/api/queues/%s/%s', urlencode($vhost), urlencode($name)), 'PUT', [], $queue);
     }
 
     /**
@@ -74,7 +74,7 @@ class Queue extends AbstractApi
 
     /**
      * A list of all bindings on a given queue.
-     * 
+     *
      * @param string $vhost
      * @param string $queue
      * @return array
@@ -139,6 +139,6 @@ class Queue extends AbstractApi
             $parameters['truncate'] = $truncate;
         }
 
-        return $this->client->send(sprintf('/api/queues/%s/%s/get', urlencode($vhost), urlencode($name)), 'POST', null, $parameters);
+        return $this->client->send(sprintf('/api/queues/%s/%s/get', urlencode($vhost), urlencode($name)), 'POST', [], $parameters);
     }
 }

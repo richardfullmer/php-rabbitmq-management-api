@@ -27,7 +27,7 @@ class User extends AbstractApi
      */
     public function get($name)
     {
-        return $this->client->send(array('/api/users/{name}', array('name' => $name)));
+        return $this->client->send(sprintf('/api/users/%s', urlencode($name)));
     }
 
     /**
@@ -49,7 +49,7 @@ class User extends AbstractApi
      */
     public function create($name, array $user)
     {
-        return $this->client->send(array('/api/users/{name}', array('name' => $name)), 'PUT', null, $user);
+        return $this->client->send(sprintf('/api/users/%s', urlencode($name)), 'PUT', [], $user);
     }
 
     /**
@@ -60,7 +60,7 @@ class User extends AbstractApi
      */
     public function delete($name)
     {
-        return $this->client->send(array('/api/users/{name}', array('name' => $name)), 'DELETE');
+        return $this->client->send(sprintf('/api/users/%s', urlencode($name)), 'DELETE');
     }
 
     /**
@@ -71,6 +71,6 @@ class User extends AbstractApi
      */
     public function permissions($name)
     {
-        return $this->client->send(array('/api/users/{name}/permissions', array('name' => $name)));
+        return $this->client->send(sprintf('/api/users/%s/permissions', urlencode($name)));
     }
 }

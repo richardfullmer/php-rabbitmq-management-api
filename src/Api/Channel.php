@@ -27,6 +27,6 @@ class Channel extends AbstractApi
      */
     public function get($channel)
     {
-        return $this->client->send(array('/api/channels/{channel}', array('channel' => $channel)));
+        return $this->client->send(sprintf('/api/channels/%s', urlencode($channel)));
     }
 }

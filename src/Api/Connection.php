@@ -27,7 +27,7 @@ class Connection extends AbstractApi
      */
     public function get($name)
     {
-        return $this->client->send(array('/api/connections/{name}', array('name' => $name)));
+        return $this->client->send(sprintf('/api/connections/%s', urlencode($name)));
     }
 
     /**
@@ -38,6 +38,6 @@ class Connection extends AbstractApi
      */
     public function delete($name)
     {
-        return $this->client->send(array('/api/connections/{name}', array('name' => $name)), 'DELETE');
+        return $this->client->send(sprintf('/api/connections/%s', urlencode($name)), 'DELETE');
     }
 }

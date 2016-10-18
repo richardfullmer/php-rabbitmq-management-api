@@ -2,7 +2,13 @@
 
 namespace RabbitMq\ManagementApi;
 
-use Guzzle\Http\Client as GuzzleHttpClient;
+use Http\Client\Common\Plugin\AuthenticationPlugin;
+use Http\Client\Common\Plugin\HeaderDefaultsPlugin;
+use Http\Client\Common\PluginClient;
+use Http\Client\HttpClient;
+use Http\Discovery\HttpClientDiscovery;
+use Http\Discovery\MessageFactoryDiscovery;
+use Http\Message\Authentication\BasicAuth;
 
 /**
  * ManagementApi
@@ -11,27 +17,31 @@ use Guzzle\Http\Client as GuzzleHttpClient;
  */
 class Client
 {
+    /**
+     * @var HttpClient
+     */
     protected $client;
+    protected $messageFactory;
+    protected $baseUrl;
     protected $username;
     protected $password;
 
     /**
+     * @param HttpClient $client
      * @param string $baseUrl
      * @param string $username
      * @param string $password
      */
-    /**
-     * @param \Guzzle\Http\Client $client
-     * @param string $baseUrl
-     * @param string $username
-     * @param string $password
-     */
-    public function __construct(GuzzleHttpClient $client = null, $baseUrl = 'http://localhost:15672', $username = 'guest', $password = 'guest')
+    public function __construct(HttpClient $client = null, $baseUrl = 'http://localhost:15672', $username = 'guest', $password = 'guest')
     {
-        $this->client = $client ?: new GuzzleHttpClient();
-        $this->client->setBaseUrl($baseUrl);
-        $this->username = $username;
-        $this->password = $password;
+        $this->baseUrl = $baseUrl;
+        $this->messageFactory = MessageFactoryDiscovery::find();
+
+        $this->client = new PluginClient(
+            $client ?: HttpClientDiscovery::find(), [
+            new AuthenticationPlugin(new BasicAuth($username, $password)),
+            new HeaderDefaultsPlugin(['Content-Type' => 'application/json'])
+        ]);
     }
 
     /**
@@ -47,7 +57,7 @@ class Client
      */
     public function alivenessTest($vhost)
     {
-        return $this->send(array('/api/aliveness-test/{vhost}', array('vhost' => $vhost)));
+        return $this->send(sprintf('/api/aliveness-test/%s', urlencode($vhost)));
     }
 
     /**
@@ -178,28 +188,21 @@ class Client
     }
 
     /**
-     * @param string|array          $endpoint Resource URI.
-     * @param string                $method
-     * @param array                 $headers  HTTP headers
-     * @param string|resource|array $body     Entity body of request (POST/PUT) or response (GET)
+     * @param string $endpoint Resource URI.
+     * @param string $method
+     * @param array $headers  HTTP headers
+     * @param string|resource|array $body Entity body of request (POST/PUT) or response (GET)
      * @return array
      */
-    public function send($endpoint, $method = 'GET', $headers = null, $body = null)
+    public function send($endpoint, $method = 'GET', array $headers = [], $body = null)
     {
         if (null !== $body) {
             $body = json_encode($body);
         }
-        
-        $request = $this->client->createRequest($method, $endpoint, $headers, $body)->setAuth($this->username, $this->password);
-        
-        if (in_array($method, array('PUT', 'POST', 'DELETE'))) {
-            $request->setHeader('content-type', 'application/json');
-        }
-        
-        $response = $request->send();
 
-        return json_decode($response->getBody(), true);
+        $request = $this->messageFactory->createRequest($method, $this->baseUrl . $endpoint, $headers, $body);
+        $response = $this->client->sendRequest($request);
+
+        return json_decode($response->getBody()->getContents(), true);
     }
-
-
 }

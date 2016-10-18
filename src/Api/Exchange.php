@@ -24,7 +24,7 @@ class Exchange extends AbstractApi
     public function all($vhost = null)
     {
         if ($vhost) {
-            return $this->client->send(array('/api/exchanges/{vhost}', array('vhost' => $vhost)));
+            return $this->client->send(sprintf('/api/exchanges/%s', urlencode($vhost)));
         } else {
             return $this->client->send('/api/exchanges');
         }
@@ -39,7 +39,7 @@ class Exchange extends AbstractApi
      */
     public function get($vhost, $name)
     {
-        return $this->client->send(array('/api/exchanges/{vhost}/{name}', array('vhost' => $vhost, 'name' => $name)));
+        return $this->client->send(sprintf('/api/exchanges/%s/%s', urlencode($vhost), urlencode($name)));
     }
 
     /**
@@ -67,7 +67,7 @@ class Exchange extends AbstractApi
             throw new InvalidArgumentException("Error creating exchange: Exchange key 'type' is mandatory");
         }
 
-        return $this->client->send(array('/api/exchanges/{vhost}/{name}', array('vhost' => $vhost, 'name' => $name)), 'PUT', null, $exchange);
+        return $this->client->send(sprintf('/api/exchanges/%s/%s', urlencode($vhost), urlencode($name)), 'PUT', [], $exchange);
     }
 
     /**
@@ -79,7 +79,7 @@ class Exchange extends AbstractApi
      */
     public function delete($vhost, $name)
     {
-        return $this->client->send(array('/api/exchanges/{vhost}/{name}', array('vhost' => $vhost, 'name' => $name)), 'DELETE');
+        return $this->client->send(sprintf('/api/exchanges/%s/%s', urlencode($vhost), urlencode($name)), 'DELETE');
     }
 
     /**
@@ -91,7 +91,7 @@ class Exchange extends AbstractApi
      */
     public function sourceBindings($vhost, $name)
     {
-        return $this->client->send(array('/api/exchanges/{vhost}/{name}/bindings/source', array('vhost' => $vhost, 'name' => $name)));
+        return $this->client->send(sprintf('/api/exchanges/%s/%s/bindings/source', urlencode($vhost), urlencode($name)));
     }
 
     /**
@@ -103,7 +103,7 @@ class Exchange extends AbstractApi
      */
     public function destinationBindings($vhost, $name)
     {
-        return $this->client->send(array('/api/exchanges/{vhost}/{name}/bindings/destination', array('vhost' => $vhost, 'name' => $name)));
+        return $this->client->send(sprintf('/api/exchanges/%s/%s/bindings/destination', urlencode($vhost), urlencode($name)));
     }
 
     /**
@@ -146,6 +146,6 @@ class Exchange extends AbstractApi
             throw new InvalidArgumentException("Error publishing to exchange: Message key 'payload_encoding' is mandatory");
         }
 
-        return $this->client->send(array('/api/exchanges/{vhost}/{name}/publish', array('vhost' => $vhost, 'name' => $name)), 'POST', null, $message);
+        return $this->client->send(sprintf('/api/exchanges/%s/%s/publish', urlencode($vhost), urlencode($name)), 'POST', [], $message);
     }
 }
