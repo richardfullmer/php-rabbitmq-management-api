@@ -23,8 +23,6 @@ class Client
     protected $client;
     protected $messageFactory;
     protected $baseUrl;
-    protected $username;
-    protected $password;
 
     /**
      * @param HttpClient $client
