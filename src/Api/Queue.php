@@ -65,11 +65,23 @@ class Queue extends AbstractApi
     /**
      * @param string $vhost
      * @param string $name
+     * @param bool $ifEmpty
+     * @param bool $ifUnused
      * @return array
      */
-    public function delete($vhost, $name)
+    public function delete($vhost, $name, $ifEmpty = false, $ifUnused = false)
     {
-        return $this->client->send(sprintf('/api/queues/%s/%s', urlencode($vhost), urlencode($name)), 'DELETE');
+        $queryString = [];
+
+        if ($ifEmpty) {
+            $queryString['if-empty'] = 'true';
+        }
+
+        if ($ifUnused) {
+            $queryString['if-unused'] = 'true';
+        }
+
+        return $this->client->send(sprintf('/api/queues/%s/%s?%s', urlencode($vhost), urlencode($name), http_build_query($queryString)), 'DELETE');
     }
 
     /**
