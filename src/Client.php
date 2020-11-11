@@ -114,6 +114,14 @@ class Client
     }
 
     /**
+     * @return Api\Consumer
+     */
+    public function consumers()
+    {
+        return new Api\Consumer($this);
+    }
+
+    /**
      * @return Api\Exchange
      */
     public function exchanges()
