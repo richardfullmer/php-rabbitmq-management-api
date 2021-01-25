@@ -1,7 +1,7 @@
 PHP RabbitMQ Management Api
 ===========================
 
-A simple object oriented wrapper for the [RabbitMQ Management HTTP Api](http://hg.rabbitmq.com/rabbitmq-management/raw-file/rabbitmq_v3_0_3/priv/www/api/index.html) in PHP 5.3
+A simple object oriented wrapper for the [RabbitMQ Management HTTP Api](http://hg.rabbitmq.com/rabbitmq-management/raw-file/rabbitmq_v3_0_3/priv/www/api/index.html) in PHP 7.1+
 
 Uses [PHP-HTTP](http://docs.php-http.org/en/latest/index.html) for requests.
 
@@ -16,10 +16,10 @@ $ composer require richardfullmer/rabbitmq-management-api
 
 Additionally, you require a [httplug compatible client](http://docs.php-http.org/en/latest/clients.html).
 
-For example, use the guzzle6 adapter:
+For example, use the Guzzle 7 adapter:
 
 ```bash
-$ composer require php-http/guzzle6-adapter
+$ composer require php-http/guzzle7-adapter
 ```
 
 Basic Usage
